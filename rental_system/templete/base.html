@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Vehicle Rental System</title>
+  {% load static %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  <link rel="stylesheet" href="{% static 'global.css' %}">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    html,
+    body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    footer {
+      margin-top: auto;
+    }
+
+    /* ===== Beautiful 3D Effects ===== */
+
+    /* Navbar 3D Effect */
+    .navbar {
+      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%) !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 100;
+    }
+
+    .navbar::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      right: 0;
+      height: 10px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
+      filter: blur(5px);
+    }
+
+    /* Brand Text 3D Effect */
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: translateY(-2px);
+      text-shadow: 3px 3px 8px rgba(102, 126, 234, 0.8);
+    }
+
+    /* Nav Link 3D Effect */
+    .nav-link {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      transform: translateY(-3px);
+      color: #ffb347 !important;
+      text-shadow: 0 0 10px rgba(255, 179, 71, 0.6);
+    }
+
+    /* Dropdown Menu 3D */
+    .dropdown-menu {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: none;
+      border-top: 2px solid #667eea;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      animation: dropdownSlideDown 0.3s ease;
+      transform-origin: top center;
+    }
+
+    @keyframes dropdownSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-15px) rotateX(10deg);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
+    }
+
+    .dropdown-item {
+      color: #fff;
+      transition: all 0.2s ease;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .dropdown-item::before {
+      content: '';
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: #667eea;
+      border-radius: 50%;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      background: linear-gradient(90deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+      transform: translateX(10px);
+      color: #ffb347;
+      text-shadow: 0 0 10px rgba(255, 179, 71, 0.5);
+    }
+
+    .dropdown-item:hover::before {
+      opacity: 1;
+      transform: translateY(-50%) scale(1.5);
+    }
+
+    /* Main Container 3D */
+    .container {
+      perspective: 1200px;
+    }
+
+    /* Card 3D Effects */
+    .card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+      transform-style: preserve-3d;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-15px) rotateX(5deg) rotateZ(2deg);
+      box-shadow: 0 40px 80px rgba(102, 126, 234, 0.4);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    /* Button 3D Effects */
+    .btn {
+      position: relative;
+      overflow: hidden;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      transform-style: preserve-3d;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+      z-index: 1;
+    }
+
+    .btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+      border-color: transparent;
+    }
+
+    /* Form Input 3D */
+    .form-control {
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 1);
+      border-color: #667eea;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3), inset 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-3px);
+    }
+
+    /* Footer 3D */
+    footer {
+      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-top: 2px solid #667eea;
+      position: relative;
+      z-index: 10;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #667eea, transparent);
+    }
+
+    footer p {
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Badge 3D */
+    .badge {
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .badge:hover {
+      transform: scale(1.15) translateZ(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Smooth Page Transitions */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Text Glow Effect */
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">Rental System</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="vehiclesDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Vehicles
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="vehiclesDropdown">
+              <li><a class="dropdown-item" href="{% url 'vehicle_list' %}?type=car">Car List</a></li>
+              <li><a class="dropdown-item" href="{% url 'vehicle_list' %}?type=bike">Bike List</a></li>
+              <li><a class="dropdown-item" href="{% url 'vehicle_list' %}?type=truck">Truck List</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="vehiclesDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Book Ride
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="vehiclesDropdown">
+              <li><a class="dropdown-item" href="{% url 'book_ride' %}?type=car">Car </a></li>
+              <li><a class="dropdown-item" href="{% url 'book_ride' %}?type=bike">Bike</a></li>
+              <li><a class="dropdown-item" href="{% url 'book_ride' %}?type=truck">Truck</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="addVehicleDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Add Vehicle
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="addVehicleDropdown">
+              <li><a class="dropdown-item" href="{% url 'addCar' %}">Car</a></li>
+              <li><a class="dropdown-item" href="{% url 'addBike' %}">Bike</a></li>
+              <li><a class="dropdown-item" href="{% url 'addTruck' %}">Truck</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav ms-auto">
+          {% if user.is_authenticated %}
+          <!-- Dropdown for logged-in user -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Welcome, {{ user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+              <li><a class="dropdown-item" href="{% url 'add_owner_profile' %}">Add Profile Details</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </li>
+
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main>
+    <div class="container mt-4">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-3 mt-5">
+    <div class="container">
+      <div class="d-flex justify-content-center align-items-center gap-3 flex-column flex-md-row">
+        <div class="d-flex align-items-center gap-3">
+          <a href="#" class="text-white social-link social-facebook d-flex align-items-center gap-2"
+            aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"
+              aria-hidden="true">
+              <path
+                d="M22 12.07C22 6.48 17.52 2 11.93 2S2 6.48 2 12.07C2 17.09 5.66 21.21 10.44 22v-7.03H8.08v-2.9h2.36V9.4c0-2.33 1.38-3.61 3.5-3.61.99 0 2.02.18 2.02.18v2.22h-1.14c-1.13 0-1.48.7-1.48 1.41v1.68h2.52l-.4 2.9h-2.12V22C18.34 21.21 22 17.09 22 12.07z" />
+            </svg>
+          </a>
+
+          <a href="#" class="text-white social-link social-instagram d-flex align-items-center gap-2"
+            aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"
+              aria-hidden="true">
+              <path
+                d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3z" />
+              <path
+                d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 .001 6.001A3 3 0 0 0 12 9zM17.5 6.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+            </svg>
+          </a>
+
+          <span class="ms-2 fw-bold">Rental App</span>
+        </div>
+
+        <div>
+          <p class="mb-0">&copy; 2025 Vehicle Rental System</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

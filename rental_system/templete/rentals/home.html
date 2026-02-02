@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="text-center mt-5">
+  <h1 class="display-4">Welcome to Vehicle Rental System 🚗</h1>
+  <p class="lead">Rent cars, bikes, and trucks with ease.</p>
+  <a href="{% url 'car_list' %}" class="btn btn-primary btn-lg mx-2">Browse Cars</a>
+  <a href="{% url 'addCar' %}" class="btn btn-success btn-lg mx-2">Add Your Car</a>
+</div>
+
+<!-- Service Grid Section -->
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Our Services</h2>
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <img src="{% static 'pexels-mikebirdy-810357.jpg' %}" class="service-img shadow-sm" alt="Car Service">
+      <h5 class="mt-3">Car Rentals</h5>
+      <p>Affordable cars for daily, weekly, or monthly trips.</p>
+    </div>
+    <div class="col-md-4 mb-4">
+      <img src="{% static 'bike.webp' %}" class="service-img shadow-sm" alt="Bike Service">
+      <h5 class="mt-3">Bike Rentals</h5>
+      <p>Quick and flexible bike rentals for city rides.</p>
+    </div>
+    <div class="col-md-4 mb-4">
+      <img src="{% static 'truck.webp' %}" class="service-img shadow-sm" alt="Truck Service">
+      <h5 class="mt-3">Truck Rentals</h5>
+      <p>Reliable trucks for transporting heavy loads.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Carousel Section -->
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Gallery</h2>
+  <div id="serviceCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img
+          src="{% static 'gon96nko_tata-motors-introduces-21-commercial-vehicle-models-and-variants-in-one-day_625x300_28_October_21.webp' %}"
+          class="d-block w-100 carousel-img" alt="Car Service">
+        <div class="carousel-caption bg-dark bg-opacity-50 rounded">
+          <h5>Car Rentals</h5>
+          <p>Comfortable cars for every journey.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'truck1.webp' %}" class="d-block w-100 carousel-img" alt="Bike Service">
+        <div class="carousel-caption bg-dark bg-opacity-50 rounded">
+          <h5>Bike Rentals</h5>
+          <p>Fast and flexible bike rides.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'pexels-mikebirdy-116675.jpg' %}" class="d-block w-100 carousel-img" alt="Truck Service">
+        <div class="carousel-caption bg-dark bg-opacity-50 rounded">
+          <h5>Truck Rentals</h5>
+          <p>Reliable trucks for heavy loads.</p>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#serviceCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#serviceCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+</div>
+
+<!-- Why Choose Us Section -->
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Why Choose Us?</h2>
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <i class="bi bi-cash-stack display-4 text-success"></i>
+      <h5 class="mt-3">Affordable Pricing</h5>
+      <p>Best rates for cars, bikes, and trucks.</p>
+    </div>
+    <div class="col-md-4 mb-4">
+      <i class="bi bi-shield-check display-4 text-primary"></i>
+      <h5 class="mt-3">Reliable Service</h5>
+      <p>Well-maintained vehicles and trusted owners.</p>
+    </div>
+    <div class="col-md-4 mb-4">
+      <i class="bi bi-clock-history display-4 text-warning"></i>
+      <h5 class="mt-3">24/7 Support</h5>
+      <p>We’re here to help you anytime, anywhere.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

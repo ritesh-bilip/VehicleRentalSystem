@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Vehicle List</h2>
+
+  {% if vehicle_type == 'car' %}
+  <h4>Cars</h4>
+  <ul>
+    {% for car in cars %}
+    <li>{{ car.car_name }} - {{ car.car_number }} (Owner: {{ car.owner.name }})</li>
+    {% empty %}
+    <li>No cars available</li>
+    {% endfor %}
+  </ul>
+
+  {% elif vehicle_type == 'bike' %}
+  <h4>Bikes</h4>
+  <ul>
+    {% for bike in bikes %}
+    <li>{{ bike.bike_name }} - {{ bike.bike_number }} (Owner: {{ bike.owner.name }})</li>
+    {% empty %}
+    <li>No bikes available</li>
+    {% endfor %}
+  </ul>
+
+  {% elif vehicle_type == 'truck' %}
+  <h4>Trucks</h4>
+  <ul>
+    {% for truck in trucks %}
+    <li>{{ truck.truck_name }} - {{ truck.truck_number }}-{{ truck.truck_capacity }} (Owner: {{ truck.owner.name }})</li>
+    {% empty %}
+    <li>No trucks available</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endblock %}

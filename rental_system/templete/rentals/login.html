@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body {
+      background: linear-gradient(120deg, #43e97b 0%, #38f9d7 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    form {
+      background: linear-gradient(135deg, #fff 80%, #43e97b 100%);
+      padding: 32px 28px;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #38f9d744, 0 2px 8px #43e97b44;
+      max-width: 400px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      perspective: 800px;
+      transition: box-shadow 0.25s;
+    }
+
+    form:hover {
+      box-shadow: 0 16px 48px #38f9d766, 0 4px 16px #43e97b66;
+      transform: scale(1.01) rotateY(2deg);
+    }
+
+    button {
+      background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
+      color: #fff;
+      border: none;
+      padding: 14px 0;
+      font-size: 1.15rem;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px #8f94fb44;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.4s;
+      animation: pulseGlow 1.5s infinite alternate;
+      font-weight: 700;
+      width: 100%;
+      margin-top: 10px;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 8px 32px #4e54c866;
+      background: linear-gradient(90deg, #8f94fb 0%, #4e54c8 100%);
+      filter: brightness(1.08);
+    }
+
+    button:active {
+      transform: scale(0.97) translateY(2px);
+      box-shadow: 0 2px 8px #4e54c866;
+      filter: brightness(0.98);
+    }
+
+    input,
+    select,
+    textarea {
+      font-size: 1rem;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #8f94fb;
+      margin-bottom: 8px;
+      outline: none;
+      transition: box-shadow 0.2s, border-color 0.2s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      box-shadow: 0 0 8px #8f94fb88;
+      border-color: #4e54c8;
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        box-shadow: 0 4px 16px #8f94fb44;
+      }
+
+      100% {
+        box-shadow: 0 8px 32px #4e54c866;
+      }
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 14px 4px;
+        max-width: 98vw;
+      }
+
+      button {
+        font-size: 1rem;
+        padding: 10px 0;
+      }
+
+      input,
+      select,
+      textarea {
+        font-size: 0.98rem;
+        padding: 8px 8px;
+      }
+    }
+    /* Global reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Background with gradient + blur */
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 10% 20%, #1e3c72 0%, #2a5298 40%, #0f2027 100%);
+  overflow: hidden;
+  color: #fff;
+}
+
+.bg {
+  position: fixed;
+  inset: -50%;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.1) 0, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(0, 255, 200, 0.25) 0, transparent 60%);
+  filter: blur(40px);
+  z-index: -2;
+}
+
+/* Center container */
+.auth-container {
+  position: relative;
+  width: min(900px, 100%);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  perspective: 1200px;       /* 3D perspective */
+}
+
+/* Toggle wrapper */
+.toggle-box {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+}
+
+/* Hide radios */
+.toggle-box input[type="radio"] {
+  display: none;
+}
+
+/* Toggle buttons */
+.toggle-btns {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 18px 35px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 15px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Sliding highlight under active tab */
+.tab-highlight {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 50%;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #00f5a0 0%, #00d9f5 50%, #0078ff 100%);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.15);
+  transition: transform 0.35s ease;
+}
+
+/* Label coloring when active */
+#signin:checked ~ .toggle-btns label[for="signin"],
+#signup:checked ~ .toggle-btns label[for="signup"] {
+  color: #0b1020;
+  font-weight: 600;
+}
+
+/* Move highlight based on checked radio */
+#signin:checked ~ .toggle-btns .tab-highlight {
+  transform: translateX(0%);
+}
+
+#signup:checked ~ .toggle-btns .tab-highlight {
+  transform: translateX(100%);
+}
+
+/* 3D glass card */
+.card-3d {
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(22px);
+  padding: 32px 32px 36px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Slight 3D tilt depending on tab */
+#signin:checked ~ .card-3d {
+  transform: rotateY(-10deg) translateY(-4px);
+  transition: transform 0.5s ease;
+}
+
+#signup:checked ~ .card-3d {
+  transform: rotateY(10deg) translateY(-4px);
+  transition: transform 0.5s ease;
+}
+
+/* Forms base */
+.form {
+  position: absolute;
+  inset: 0;
+  padding: 32px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transform-style: preserve-3d;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+/* Sign In visible by default */
+.form-signin {
+  opacity: 1;
+  transform: translateZ(40px);
+}
+
+/* Sign Up initially hidden behind */
+.form-signup {
+  opacity: 0;
+  transform: translateZ(-80px) scale(0.96);
+}
+
+/* Radio-controlled visibility */
+#signin:checked ~ .card-3d .form-signin {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateZ(40px);
+}
+
+#signin:checked ~ .card-3d .form-signup {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateZ(-80px) scale(0.96);
+}
+
+#signup:checked ~ .card-3d .form-signin {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateZ(-80px) scale(0.96);
+}
+
+#signup:checked ~ .card-3d .form-signup {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateZ(40px);
+}
+
+/* Titles */
+.form h2 {
+  font-size: 26px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Input 3D group */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.input-group label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* 3D field wrapper */
+.input-3d {
+  position: relative;
+  border-radius: 14px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.6));
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.9),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  transform: translateZ(12px);
+}
+
+.input-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.4), transparent 60%);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.input-3d input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background: rgba(5, 10, 25, 0.9);
+  color: #fff;
+  font-size: 14px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 0 0 transparent;
+  transition: box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.input-3d input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Focus glow */
+.input-3d input:focus {
+  background: rgba(10, 20, 45, 0.95);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 230, 255, 0.6),
+    0 0 18px rgba(0, 230, 255, 0.7);
+}
+
+/* Extra row (remember + link) */
+.extra-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.remember input {
+  margin-right: 6px;
+}
+
+.link {
+  color: #5bd8ff;
+  text-decoration: none;
+  position: relative;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.link:hover::after {
+  width: 100%;
+}
+
+/* 3D button */
+.btn-3d {
+  margin-top: 10px;
+  align-self: flex-start;
+  padding: 11px 32px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  color: #050816;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: linear-gradient(135deg, #00f5a0, #00d9f5, #0078ff);
+  box-shadow:
+    0 18px 30px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(255, 255, 255, 0.22);
+  transform: translateY(0);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.25s ease;
+}
+
+.btn-3d::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.1));
+  opacity: 0.24;
+  pointer-events: none;
+}
+
+/* Alternate accent for Sign Up */
+.btn-3d.alt {
+  background: linear-gradient(135deg, #ff9a9e, #fecfef, #f5576c);
+}
+
+/* Hover and active state = 3D press effect */
+.btn-3d:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow:
+    0 24px 40px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+
+.btn-3d:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .card-3d {
+    padding: 24px 20px 30px;
+  }
+
+  .form {
+    padding: 24px 20px 30px;
+  }
+
+  .extra-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .btn-3d {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+</body>
+
+</html>

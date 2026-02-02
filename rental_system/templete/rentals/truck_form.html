@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  /* Fix form input interactions */
+  .card-body form input,
+  .card-body form textarea,
+  .card-body form select {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+  }
+
+  .card-body form input:focus,
+  .card-body form textarea:focus,
+  .card-body form select:focus {
+    position: relative;
+    z-index: 11;
+    outline: none;
+  }
+
+  .form-group {
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Custom form styling */
+  .form-control {
+    border-radius: 8px;
+    padding: 10px 15px;
+    background-color: #fff;
+  }
+
+  .form-control:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+  }
+
+  label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .form-group p {
+    margin-bottom: 15px;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="row">
+    <!-- Add Truck Form Section -->
+    <div class="col-md-6">
+      <div class="card shadow-3d">
+        <div class="card-body">
+          <h2 class="card-title mb-4">Add a Truck</h2>
+          <form method="post" style="position: relative; z-index: 10;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary w-100 mt-3">Add Truck</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Existing Trucks Section -->
+    <div class="col-md-6">
+      <div class="card shadow-3d">
+        <div class="card-body">
+          <h3 class="card-title mb-4">Existing Trucks</h3>
+          <div class="list-group">
+            {% for truck in trucks %}
+            <div class="list-group-item">
+              <h5 class="mb-1">{{ truck.truck_name }}</h5>
+              <p class="mb-1"><strong>Number:</strong> {{ truck.truck_number }}</p>
+              <p class="mb-1"><strong>Capacity:</strong> {{ truck.load_capacity }} tons</p>
+              <p class="mb-0"><strong>Owner:</strong> {{ truck.owner.name }}</p>
+            </div>
+            {% empty %}
+            <div class="alert alert-info">No trucks available</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

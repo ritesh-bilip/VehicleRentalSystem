@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">My Dashboard</h2>
+  <h5>Booking History</h5>
+  <ul class="list-group">
+    {% for booking in bookings %}
+      <li class="list-group-item">
+        {{ booking.pickup_location }} → {{ booking.destination }} |
+        Vehicle: {{ booking.preference }} |
+        Date: {{ booking.created_at }}
+      </li>
+    {% empty %}
+      <li class="list-group-item">No bookings yet</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

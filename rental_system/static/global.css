@@ -1,0 +1,226 @@
+/* ===== 3D Effects & Modern Styling ===== */
+
+/* 3D Card Hover Effect */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  border: none;
+}
+
+.card:hover {
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* 3D Button Effect */
+.btn {
+  position: relative;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+  transform: translateY(-3px) rotateZ(1deg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 3D Form Input Focus Effect */
+.form-control {
+  transition: all 0.3s ease;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25),
+    inset 0 1px 2px rgba(0, 0, 0, 0.075);
+  transform: scale(1.02);
+}
+
+/* 3D Container Perspective */
+.container {
+  perspective: 1000px;
+}
+
+/* 3D Image Hover Effect */
+img {
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+img:hover {
+  transform: rotateY(5deg) rotateX(-5deg) scale(1.05);
+  filter: brightness(1.1) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+}
+
+/* 3D List Items */
+.list-group-item {
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.list-group-item:hover {
+  transform: translateX(10px) rotateY(2deg);
+  background-color: rgba(13, 110, 253, 0.1);
+  border-left: 4px solid #0d6efd;
+  padding-left: calc(1rem + 4px);
+}
+
+/* 3D Navbar Effect */
+.navbar {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 3D Dropdown Menu */
+.dropdown-menu {
+  animation: dropdownSlideIn 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+@keyframes dropdownSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) rotateX(10deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+.dropdown-item:hover {
+  transform: translateX(5px);
+  background-color: #0d6efd;
+}
+
+/* 3D Footer */
+footer {
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #0d6efd, transparent);
+}
+
+/* 3D Badge Effect */
+.badge {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.badge:hover {
+  transform: scale(1.1) translateZ(10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 3D Modal Animation */
+.modal.show {
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: rotateX(-20deg) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotateX(0) scale(1);
+  }
+}
+
+/* Gradient Text Effect */
+.gradient-text {
+  background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+/* 3D Shadow for Depth */
+.shadow-3d {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Carousel & Service Image Uniform Sizes ===== */
+
+/* Set a fixed height for carousel items and make images cover the area */
+#serviceCarousel .carousel-item {
+  height: 400px;
+}
+
+#serviceCarousel .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: none;
+  /* disable global hover tilt for carousel images */
+}
+
+/* Smaller height on small devices */
+@media (max-width: 767px) {
+  #serviceCarousel .carousel-item {
+    height: 220px;
+  }
+}
+
+/* Make service grid images consistent */
+.row.text-center .col-md-4 img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Ensure carousel captions stay readable */
+.carousel-caption {
+  bottom: 20px;
+  transform: translateZ(20px);
+}
+
+/* Footer social icons */
+footer .social-link svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+footer .social-link {
+  color: #ffffff;
+  transition: color 0.25s ease, transform 0.15s ease;
+}
+
+footer .social-link:hover {
+  transform: translateY(-3px);
+}
+
+/* Specific hover colors */
+.social-facebook:hover { color: #3b5998; }
+.social-instagram:hover { color: #E1306C; }

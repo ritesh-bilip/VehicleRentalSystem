@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      background: linear-gradient(120deg, #021c71 0%, #3c7fe4 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    form {
+      background: linear-gradient(135deg, #cf8a09 80%, #dd2c08 100%);
+      padding: 32px 28px;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #38f9d744, 0 2px 8px #43e97b44;
+      max-width: 400px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      perspective: 800px;
+      transition: box-shadow 0.25s;
+    }
+
+    form:hover {
+      box-shadow: 0 16px 48px #38f9d766, 0 4px 16px #43e97b66;
+      transform: scale(1.01) rotateY(2deg);
+    }
+
+    button {
+      background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
+      color: #fff;
+      border: none;
+      padding: 14px 0;
+      font-size: 1.15rem;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px #8f94fb44;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.4s;
+      animation: pulseGlow 1.5s infinite alternate;
+      font-weight: 700;
+      width: 100%;
+      margin-top: 10px;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 8px 32px #4e54c866;
+      background: linear-gradient(90deg, #8f94fb 0%, #4e54c8 100%);
+      filter: brightness(1.08);
+    }
+
+    button:active {
+      transform: scale(0.97) translateY(2px);
+      box-shadow: 0 2px 8px #4e54c866;
+      filter: brightness(0.98);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 10px 0;
+      color: #f5576c;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        box-shadow: 0 4px 16px #8f94fb44;
+      }
+
+      100% {
+        box-shadow: 0 8px 32px #4e54c866;
+      }
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 14px 4px;
+        max-width: 98vw;
+      }
+
+      button {
+        font-size: 1rem;
+        padding: 10px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if form.errors %}
+    <ul>
+      {% for field in form %}
+      {% for error in field.errors %}
+      <li>{{ field.label }}: {{ error }}</li>
+      {% endfor %}
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <button type="submit">Sign Up</button>
+  </form>
+</body>
+
+</html>
