@@ -24,9 +24,8 @@ SECRET_KEY = 'django-insecure-fpp%qlc_qo)^1cm&9x#c7*ve$wfl43d**8!%letvs(cev2e0^v
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
-
+import os
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 
 # Application definition
 
@@ -38,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rental_system.rentals',
+    'rentals',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +135,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL = 'rental_system.User'
 AUTH_USER_MODEL = 'rentals.User'
 ROOT_URLCONF = 'rental_system.rental_system.urls'
+WSGI_APPLICATION = 'rental_system.rental_system.wsgi.application'
