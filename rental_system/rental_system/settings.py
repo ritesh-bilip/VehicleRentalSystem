@@ -137,3 +137,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'rentals.User'
 ROOT_URLCONF = 'rental_system.rental_system.urls'
 WSGI_APPLICATION = 'rental_system.wsgi.application'
+# Redirects after login/logout
+LOGIN_REDIRECT_URL = '/owner_dashboard/'   # after successful login
+LOGOUT_REDIRECT_URL = '/'                 # after logout
