@@ -134,5 +134,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ✅ custom user model    
 # AUTH_USER_MODEL = 'rental_system.User'
 AUTH_USER_MODEL = 'rentals.User'
-ROOT_URLCONF = 'rental_system.rental_system.urls'
-WSGI_APPLICATION = 'rental_system.rental_system.wsgi.application'
+ROOT_URLCONF = 'rental_system.urls'
+WSGI_APPLICATION = 'rental_system.wsgi.application'
