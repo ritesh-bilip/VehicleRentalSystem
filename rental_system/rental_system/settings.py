@@ -76,11 +76,11 @@ WSGI_APPLICATION = 'rental_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'vehicle_rental_db',
-        'USER': 'postgres',
-        'PASSWORD': 'RITESH@2004',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DATABASE_NAME', 'vehicle_rental_db'),
+        'USER': os.getenv('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'RITESH@2004'),
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
 
@@ -134,5 +134,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ✅ custom user model    
 # AUTH_USER_MODEL = 'rental_system.User'
 AUTH_USER_MODEL = 'rentals.User'
-ROOT_URLCONF = 'rental_system.rental_system.urls'
-WSGI_APPLICATION = 'rental_system.rental_system.wsgi.application'
+ROOT_URLCONF = 'rental_system.urls'
+WSGI_APPLICATION = 'rental_system.wsgi.application'
