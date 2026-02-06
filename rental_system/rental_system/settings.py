@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-fpp%qlc_qo)^1cm&9x#c7*ve$wfl43d**8!%letvs(cev2e0^v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 import os
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = ['*'] if os.getenv('DEBUG') else [os.getenv('RENDER_EXTERNAL_HOSTNAME', 'vehiclerentalsystem-1-b5i6.onrender.com')]
+
 
 # Application definition
 
@@ -37,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rental_system.rentals',
+    'rentals',
 
 ]
 
@@ -135,8 +136,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ✅ custom user model    
 # AUTH_USER_MODEL = 'rental_system.User'
 AUTH_USER_MODEL = 'rentals.User'
-ROOT_URLCONF = 'rental_system.rental_system.urls'
-WSGI_APPLICATION = 'rental_system.wsgi.application'
-# Redirects after login/logout
-LOGIN_REDIRECT_URL = '/owner_dashboard/'   # after successful login
-LOGOUT_REDIRECT_URL = '/'                 # after logout
+ROOT_URLCONF = 'rental_system.urls'

@@ -46,7 +46,7 @@ class TruckForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model=Profile
-        fields='__all__'
+        fields=['name', 'email', 'phone_number', 'address']
         
 from django import forms
 from .models import Booking

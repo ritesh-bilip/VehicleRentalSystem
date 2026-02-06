@@ -95,17 +95,18 @@ def car_list(request):
     return render(request, 'rentals/car_list.html', {'cars': cars})
 @login_required
 def add_owner_profile(request):
-    if request.method=='POST':
-        form=ProfileForm(request.POST)
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)  # ✅ use instance
         if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user= request.user
-            profile.save()
-            messages.success(request,"Profile created successfully")
+            form.save()
+            messages.success(request, "Profile saved successfully")
             return redirect('dashboard')
     else:
-        form=ProfileForm()
-    return render(request,'rentals/add_profile.html',{'form':form})
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'rentals/add_profile.html', {'form': form})
 @login_required
 def dashboard(request):
     profile= Profile.objects.filter(user=request.user).first()

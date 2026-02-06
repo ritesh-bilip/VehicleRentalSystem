@@ -136,6 +136,7 @@ class User(AbstractBaseUser):
     
 #!------- Owner peofile add------
 class Profile(models.Model):
+    name = models.CharField(max_length=100,null=True )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="owner_profile")
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=15)
