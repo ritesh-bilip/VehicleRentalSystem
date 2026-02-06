@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-fpp%qlc_qo)^1cm&9x#c7*ve$wfl43d**8!%letvs(cev2e0^v
 DEBUG = True
 import os
 ALLOWED_HOSTS = ['vehiclerentalsystem-1-b5i6.onrender.com', 'localhost', '127.0.0.1']
-
+DEBUG = False
 
 
 # Application definition
