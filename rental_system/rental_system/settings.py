@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-fpp%qlc_qo)^1cm&9x#c7*ve$wfl43d**8!%letvs(cev2e0^v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 import os
-ALLOWED_HOSTS = ['*'] if os.getenv('DEBUG') else [os.getenv('RENDER_EXTERNAL_HOSTNAME', 'vehiclerentalsystem-1-b5i6.onrender.com')]
+ALLOWED_HOSTS = ['vehiclerentalsystem-1-b5i6.onrender.com', 'localhost', '127.0.0.1']
+
 
 
 # Application definition
