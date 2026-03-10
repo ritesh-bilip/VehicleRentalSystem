@@ -17,6 +17,7 @@ REST_FRAMEWORK = {
 # Security settings
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
 ALLOWED_HOSTS = ['*']  # Render deployment
 
 # Application definition

@@ -150,7 +150,7 @@ def vehicle_list(request):
         'bikes': bikes,
         'trucks': trucks,
     }
-    return render(request, 'rentals/vehicle_list.html', context)
+    return render(request, 'rentals/Vehicle_list.html', context)
 def book_ride(request):
     if request.method == 'POST':
         form = BookingForm(request.POST)
