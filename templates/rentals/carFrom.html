@@ -2,83 +2,350 @@
 
 {% block content %}
 <style>
-  /* Fix form input interactions */
-  .card-body form input,
-  .card-body form textarea,
-  .card-body form select {
+  /* ===== Enhanced 3D Car Form Styles ===== */
+
+  .form-page-container {
+    perspective: 1200px;
+    padding: 40px 0;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 40px;
+    transform: translateZ(30px);
+    position: relative;
+  }
+
+  .page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #f093fb);
+    border-radius: 2px;
+  }
+
+  /* 3D Card Styling */
+  .form-card-3d {
+    position: relative;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 35px;
+    transform-style: preserve-3d;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .form-card-3d::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+  }
+
+  .form-card-3d:hover {
+    transform: translateY(-10px) rotateX(3deg) translateZ(20px);
+    box-shadow: 0 35px 70px rgba(102, 126, 234, 0.3);
+  }
+
+  .form-card-3d:hover::before {
+    opacity: 1;
+  }
+
+  .form-card-3d>* {
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-title-3d {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 25px;
+    transform: translateZ(15px);
+    position: relative;
+  }
+
+  .card-title-3d::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 2px;
+  }
+
+  /* 3D Form Inputs */
+  .form-group-3d {
+    position: relative;
+    margin-bottom: 20px;
+    transform-style: preserve-3d;
+  }
+
+  .form-group-3d label {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transform: translateZ(15px);
+    transition: all 0.3s ease;
+  }
+
+  .input-wrapper-3d {
+    position: relative;
+    transform-style: preserve-3d;
+  }
+
+  .input-wrapper-3d::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+    border-radius: 15px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .input-wrapper-3d:focus-within::before {
+    opacity: 1;
+  }
+
+  .form-control-3d {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    color: #fff;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: translateZ(10px);
+    box-shadow:
+      inset 0 2px 10px rgba(0, 0, 0, 0.2),
+      0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-control-3d::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .form-control-3d:focus {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+    border-color: #667eea;
+    box-shadow:
+      0 0 30px rgba(102, 126, 234, 0.4),
+      inset 0 2px 10px rgba(0, 0, 0, 0.2),
+      0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateZ(20px);
+  }
+
+  /* 3D Submit Button */
+  .btn-3d {
+    position: relative;
+    width: 100%;
+    padding: 16px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow:
+      0 10px 30px rgba(102, 126, 234, 0.4),
+      0 5px 15px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    margin-top: 15px;
+    overflow: hidden;
+  }
+
+  .btn-3d::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-3d:hover {
+    transform: translateY(-5px) translateZ(10px) scale(1.02);
+    box-shadow:
+      0 20px 40px rgba(102, 126, 234, 0.5),
+      0 10px 25px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  .btn-3d:hover::before {
+    left: 100%;
+  }
+
+  /* Vehicle List Items */
+  .vehicle-list-3d {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .vehicle-item-3d {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .vehicle-item-3d::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #667eea, #764ba2);
+    border-radius: 15px 0 0 15px;
+    transform: translateZ(5px);
+  }
+
+  .vehicle-item-3d:hover {
+    transform: translateX(10px) translateZ(15px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.25);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
+  }
+
+  .vehicle-item-3d h5 {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    transform: translateZ(10px);
+  }
+
+  .vehicle-item-3d p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 5px 0;
+    font-size: 0.9rem;
+    transform: translateZ(5px);
+  }
+
+  .vehicle-item-3d strong {
+    color: #667eea;
+  }
+
+  /* Empty State */
+  .empty-alert-3d {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    transform: translateZ(15px);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+  }
+
+  /* Form fix - ensure inputs are clickable */
+  .form-card-3d form {
+    position: relative;
+    z-index: 10;
+  }
+
+  .form-card-3d form input,
+  .form-card-3d form textarea,
+  .form-card-3d form select {
     position: relative;
     z-index: 10;
     pointer-events: auto;
   }
 
-  .card-body form input:focus,
-  .card-body form textarea:focus,
-  .card-body form select:focus {
+  .form-card-3d form input:focus,
+  .form-card-3d form textarea:focus,
+  .form-card-3d form select:focus {
     position: relative;
     z-index: 11;
-    outline: none;
   }
 
-  .form-group {
-    position: relative;
-    z-index: 10;
-  }
+  /* Responsive */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 2rem;
+    }
 
-  /* Custom form styling */
-  .form-control {
-    border-radius: 8px;
-    padding: 10px 15px;
-    background-color: #fff;
-  }
+    .form-card-3d {
+      padding: 25px;
+      margin-bottom: 20px;
+    }
 
-  .form-control:focus {
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
-  }
-
-  label {
-    font-weight: 500;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .form-group p {
-    margin-bottom: 15px;
+    .card-title-3d {
+      font-size: 1.5rem;
+    }
   }
 </style>
 
-<div class="container mt-5">
+<div class="container mt-5 form-page-container">
+  <h1 class="page-title">Add a Car 🚗</h1>
+
   <div class="row">
     <!-- Add Car Form Section -->
-    <div class="col-md-6">
-      <div class="card shadow-3d">
-        <div class="card-body">
-          <h2 class="card-title mb-4">Add a Car</h2>
-          <form method="post" style="position: relative; z-index: 10;">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary w-100 mt-3">Add Car</button>
-          </form>
-        </div>
+    <div class="col-md-6 mb-4">
+      <div class="form-card-3d">
+        <h2 class="card-title-3d">Add a Car</h2>
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="form-group-3d">
+            <div class="input-wrapper-3d">
+              {{ form.as_p }}
+            </div>
+          </div>
+
+          <button type="submit" class="btn-3d">🚗 Add Car</button>
+        </form>
       </div>
     </div>
 
     <!-- Existing Cars Section -->
-    <div class="col-md-6">
-      <div class="card shadow-3d">
-        <div class="card-body">
-          <h3 class="card-title mb-4">Existing Cars</h3>
-          <div class="list-group">
-            {% for car in cars %}
-            <div class="list-group-item">
-              <h5 class="mb-1">{{ car.car_name }}</h5>
-              <p class="mb-1"><strong>Number:</strong> {{ car.car_number }}</p>
-              <p class="mb-0"><strong>Owner:</strong> {{ car.owner.name }}</p>
-            </div>
-            {% empty %}
-            <div class="alert alert-info">No cars available</div>
-            {% endfor %}
+    <div class="col-md-6 mb-4">
+      <div class="form-card-3d">
+        <h2 class="card-title-3d">Existing Cars</h2>
+        <div class="list-group">
+          {% for car in cars %}
+          <div class="vehicle-item-3d">
+            <h5>{{ car.car_name }}</h5>
+            <p><strong>Number:</strong> {{ car.car_number }}</p>
+            <p><strong>Owner:</strong> {{ car.owner.name }}</p>
           </div>
+          {% empty %}
+          <div class="empty-alert-3d">
+            🚗 No cars available
+          </div>
+          {% endfor %}
         </div>
       </div>
     </div>

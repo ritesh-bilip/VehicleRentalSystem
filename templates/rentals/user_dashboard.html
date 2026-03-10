@@ -1,18 +1,295 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-5">
-  <h2 class="mb-4">My Dashboard</h2>
-  <h5>Booking History</h5>
-  <ul class="list-group">
-    {% for booking in bookings %}
-      <li class="list-group-item">
-        {{ booking.pickup_location }} → {{ booking.destination }} |
-        Vehicle: {{ booking.preference }} |
-        Date: {{ booking.created_at }}
-      </li>
-    {% empty %}
-      <li class="list-group-item">No bookings yet</li>
-    {% endfor %}
-  </ul>
+<style>
+  /* ===== 3D User Dashboard Styles ===== */
+  
+  .dashboard-container {
+    perspective: 1200px;
+    padding: 40px 0;
+  }
+  
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 40px;
+    transform: translateZ(30px);
+    position: relative;
+  }
+  
+  .page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #f093fb);
+    border-radius: 2px;
+  }
+  
+  /* 3D Dashboard Card */
+  .dashboard-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 35px;
+    transform-style: preserve-3d;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+  
+  .dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-10px) rotateX(3deg) translateZ(20px);
+    box-shadow: 0 35px 70px rgba(102, 126, 234, 0.3);
+  }
+  
+  .dashboard-card:hover::before {
+    opacity: 1;
+  }
+  
+  .dashboard-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .dashboard-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 25px;
+    transform: translateZ(15px);
+  }
+  
+  .dashboard-subtitle {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 20px;
+    transform: translateZ(10px);
+  }
+  
+  /* 3D Booking List */
+  .booking-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .booking-item {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border-radius: 15px;
+    padding: 20px 25px;
+    margin-bottom: 15px;
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .booking-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #38ef7d, #11998e);
+    border-radius: 15px 0 0 15px;
+    transform: translateZ(5px);
+  }
+  
+  .booking-item:hover {
+    transform: translateX(10px) translateZ(15px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(56, 239, 125, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
+  }
+  
+  .booking-route {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    transform: translateZ(10px);
+  }
+  
+  .route-icon {
+    color: #38ef7d;
+    font-size: 1.2rem;
+  }
+  
+  .pickup, .destination {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .route-arrow {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .booking-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    transform: translateZ(5px);
+  }
+  
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+  }
+  
+  .detail-icon {
+    color: #667eea;
+  }
+  
+  .detail-value {
+    color: #fff;
+    font-weight: 500;
+  }
+  
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: rgba(255, 255, 255, 0.7);
+    transform: translateZ(20px);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border-radius: 15px;
+  }
+  
+  .empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+  }
+  
+  /* 3D Stats Row */
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .stat-item {
+    text-align: center;
+    transform: translateZ(20px);
+  }
+  
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .stat-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 2rem;
+    }
+    
+    .dashboard-card {
+      padding: 25px;
+    }
+    
+    .dashboard-title {
+      font-size: 1.5rem;
+    }
+    
+    .stats-row {
+      gap: 20px;
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+<div class="container mt-5 dashboard-container">
+  <h1 class="page-title">My Dashboard 📊</h1>
+  
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-value">{{ bookings.count }}</div>
+      <div class="stat-label">Total Bookings</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">{% if bookings.count > 0 %}Active{% else %}None{% endif %}</div>
+      <div class="stat-label">Status</div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="dashboard-card">
+        <h2 class="dashboard-title">Booking History 📋</h2>
+        <h5 class="dashboard-subtitle">Your Recent Rides</h5>
+        
+        {% if bookings %}
+        <ul class="booking-list">
+          {% for booking in bookings %}
+          <li class="booking-item">
+            <div class="booking-route">
+              <span class="route-icon">📍</span>
+              <span class="pickup">{{ booking.pickup_location }}</span>
+              <span class="route-arrow">→</span>
+              <span class="destination">{{ booking.destination }}</span>
+            </div>
+            <div class="booking-details">
+              <div class="detail-item">
+                <span class="detail-icon">🚗</span>
+                <span class="detail-value">Vehicle: {{ booking.preference }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">📅</span>
+                <span class="detail-value">Date: {{ booking.created_at }}</span>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <div class="empty-state">
+          <div class="empty-state-icon">📋</div>
+          <p>No bookings yet</p>
+          <a href="{% url 'book_ride' %}" class="btn btn-primary mt-3">Book Your First Ride</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
+
