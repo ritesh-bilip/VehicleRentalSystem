@@ -167,3 +167,60 @@ html {
     0 4px 8px rgba(0, 0, 0, 0.1),
     0 8px 16px rgba(0, 0, 0, 0.1);
 }
+
+/* ===== Carousel & Service Image Uniform Sizes ===== */
+
+/* Set a fixed height for carousel items and make images cover the area */
+#serviceCarousel .carousel-item {
+  height: 400px;
+}
+
+#serviceCarousel .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: none;
+  /* disable global hover tilt for carousel images */
+}
+
+/* Smaller height on small devices */
+@media (max-width: 767px) {
+  #serviceCarousel .carousel-item {
+    height: 220px;
+  }
+}
+
+/* Make service grid images consistent */
+.row.text-center .col-md-4 img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Ensure carousel captions stay readable */
+.carousel-caption {
+  bottom: 20px;
+  transform: translateZ(20px);
+}
+
+/* Footer social icons */
+footer .social-link svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+footer .social-link {
+  color: #ffffff;
+  transition: color 0.25s ease, transform 0.15s ease;
+}
+
+footer .social-link:hover {
+  transform: translateY(-3px);
+}
+
+/* Specific hover colors */
+.social-facebook:hover { color: #3b5998; }
+.social-instagram:hover { color: #E1306C; }

@@ -15,6 +15,12 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+REST_FRAMEWORK = {
+    'DEFAULT_ROUTER_TRAILING_SLASH': False,
+}
+ALLOWED_HOSTS = ['*']  # Temporary for testing
+# Or specifically: ALLOWED_HOSTS = ['vehiclerentalsystem-2-58cy.onrender.com', '.onrender.com']
+DEBUG = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -23,10 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-fpp%qlc_qo)^1cm&9x#c7*ve$wfl43d**8!%letvs(cev2e0^v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
 import os
-ALLOWED_HOSTS = ['vehiclerentalsystem-1-b5i6.onrender.com', 'localhost', '127.0.0.1']
-DEBUG = False
+# ALLOWED_HOSTS = ['vehiclerentalsystem-1-b5i6.onrender.com', 'localhost', '127.0.0.1']
+# DEBUG = True
 
 
 # Application definition

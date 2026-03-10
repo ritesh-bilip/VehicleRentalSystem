@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import Car,Profile,Bike,Truck,Booking
+from .models import Car, Profile, Bike, Truck, Booking
+
 User = get_user_model()
 
 class SignUpForm(forms.ModelForm):
@@ -45,11 +46,9 @@ class TruckForm(forms.ModelForm):
         fields='__all__'
 class ProfileForm(forms.ModelForm):
     class Meta:
-        model=Profile
-        fields=['name', 'email', 'phone_number', 'address']
-        
-from django import forms
-from .models import Booking
+        model = Profile
+        fields = ['name', 'email', 'phone_number', 'address']
+
 
 class BookingForm(forms.ModelForm):
     class Meta:

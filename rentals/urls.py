@@ -11,7 +11,7 @@ router.register(r'bikes',BikeViewSet)
 router.register(r'trucks',TruckViewSet)
 
 urlpatterns = [
-      path('api', include(router.urls)),
+      path('api/', include(router.urls)),
       path('',views.home, name='home' ),
       path('signup/',views.signup, name='signup' ),
       path('login/',views.login_user, name='login' ),
