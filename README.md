@@ -54,7 +54,8 @@ python manage.py migrate
 python manage.py runserver
 ```
 Visit `http://127.0.0.1:8000/` in your browser.
-
+### 6. hosting 
+https://vehiclerentalsystem-2-58cy.onrender.com
 ---
 
 ## 📂 Project Structure
