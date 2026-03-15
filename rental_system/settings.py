@@ -16,8 +16,8 @@ REST_FRAMEWORK = {
 
 # Security settings
 SECRET_KEY = os.environ.get('SECRET_KEY')
-# DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-DEBUG ='True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+# DEBUG ='True'
 ALLOWED_HOSTS = ['*']  # Render deployment
 
 # Application definition
@@ -104,3 +104,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'vehicle_rental_db',
+#         'USER': 'postgres',
+#         'PASSWORD': 'RITESH@2004',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
