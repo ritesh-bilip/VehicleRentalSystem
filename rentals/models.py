@@ -92,21 +92,52 @@ class RentalRecord(models.Model):   # ✅ Capitalized class name
 # -------------------
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, name, phone_number, password=None):
+    def create_user(self, email, username=None, first_name=None, last_name=None, phone_number=None, password=None, **extra_fields):
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_admin", False)
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
+
         if not email:
             raise ValueError("Must enter email")
+        
         user = self.model(
             email=self.normalize_email(email),
-            name=name,
-            phone_number=phone_number
         )
+        if username:
+            user.username = username
+        if first_name:
+            user.first_name = first_name
+        if last_name:
+            user.last_name = last_name
+        if phone_number:
+            user.phone_number = phone_number
+
+        # Set extra fields
+        user.is_staff = extra_fields.pop('is_staff', False)
+        user.is_superuser = extra_fields.pop('is_superuser', False)
+        user.is_active = extra_fields.pop('is_active', True)
+        user.is_admin = extra_fields.pop('is_admin', False)
+            
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, name, phone_number, password):
-        user = self.create_user(email, name, phone_number, password)
-        user.is_admin = True
+    def create_superuser(self, email, username=None, first_name=None, last_name=None, phone_number=None, password=None, **extra_fields):
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_admin", True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if not email:
+            raise ValueError("Must enter email")
+            
+        if not password:
+            raise ValueError("Password must be set")
+
+        user = self.create_user(
+            email, username, first_name, last_name, phone_number, password, **extra_fields
+        )
         user.save(using=self._db)
         return user
 
@@ -120,10 +151,15 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
+     # ADD THESE 2 LINES:
+    is_staff = models.BooleanField(default=False)      # ← NEW
+    is_superuser = models.BooleanField(default=False)  # ← NEW
+
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'phone_number']
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'phone_number']
 
     def __str__(self):
         return self.email

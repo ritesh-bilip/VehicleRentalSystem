@@ -42,10 +42,10 @@ def signup(request):
             user = form.save()
             # ✅ use password1
             auth_user = authenticate(
-                request,
-                email=user.email,
-                password=form.cleaned_data['password']
-            )
+               request,
+               username=user.email,
+               password=form.cleaned_data['password']
+               )
             if auth_user is not None:
                 login(request, auth_user)
                 messages.success(request, "Account created successfully")

@@ -6,5 +6,5 @@ admin.site.register(Car)
 admin.site.register(Bike)
 admin.site.register(Truck)
 admin.site.register(Customer)
-admin.site.register(RentalRecord)   # ✅ Capitalized
+admin.site.register(RentalRecord)  
 admin.site.register(User)
