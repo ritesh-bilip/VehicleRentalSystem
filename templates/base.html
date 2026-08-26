@@ -298,6 +298,7 @@
       font-weight: 700;
     }
   </style>
+  <link rel="stylesheet" href="{% static 'scene-3d.css' %}">
 </head>
 
 <body>
@@ -382,7 +383,7 @@
 
   <!-- Page Content -->
   <main>
-    <div class="container mt-4">
+    <div class="container mt-4 scene-shell scene-panel">
       {% block content %}
       {% endblock %}
     </div>
